@@ -1,6 +1,6 @@
 {
   "name": "aternode",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple library to start a server on Aternos using just a few lines",
   "main": "aternode.js",
   "scripts": {
