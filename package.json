@@ -1,12 +1,12 @@
 {
   "name": "aternode",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "A simple library to start a server on Aternos using just a few lines",
   "main": "aternode.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["aternos", "discordjs", "discord", "discord.js", "api"],
   "author": "samuelp88",
   "license": "MIT",
   "dependencies": {
