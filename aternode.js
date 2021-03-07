@@ -13,7 +13,6 @@ class Aternode extends EventEmitter{
         var aternosServerCookie;
         var tempCookie;
         var AJAX_TOKEN;
-        var data = '';
 
 
 
