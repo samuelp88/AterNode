@@ -1,6 +1,6 @@
 
 # AterNode
-Logo mais
+Uma biblioteca simples para iniciar um servidor no Aternos, confirmar automaticamente e acompanhar a posição do servidor na fila usando apenas algumas linhas.
 
 ## Começando
 ### Instalação
