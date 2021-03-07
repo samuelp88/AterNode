@@ -1,14 +1,14 @@
 {
-  "name": "aterNode",
+  "name": "aternode",
   "version": "1.0.0",
-  "description": "",
-  "main": "exemplo.js",
+  "description": "A simple library to start a server on Aternos using just a few lines",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "samuelp88",
+  "license": "MIT",
   "dependencies": {
     "jquery": "^3.5.1",
     "jsdom": "^16.4.0"

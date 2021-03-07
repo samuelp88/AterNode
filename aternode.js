@@ -1,11 +1,13 @@
 // Dependencias
 const https = require('https');
-const { JSDOM } = require("jsdom");
+const { JSDOM } = require('jsdom');
 const { window } = new JSDOM("");
 const $ = require('jquery')(window);
+const EventEmitter = require('events');
 
-class Aternode {
+class Aternode extends EventEmitter{
     constructor() {
+        super();
         //Atributos
         var aternosSessionCookie;
         var aternosServerCookie;
@@ -16,7 +18,7 @@ class Aternode {
 
 
         //Metodos Públicos
-        /** Envia uma requisição ao aternos para obter o cookie ATERNOS_SESSION, necessario para iniciar o servidor.
+        /** Envia uma requisição ao aternos para obter o cookie ATERNOS_SESSION, necessario para fazer a autenticação.
          *
          * @param {number} serverIndex - Numero ordinal do servidor na lista de servidores da conta no aternos, se o parametro não for passado seu valor sera 1.
          */
@@ -158,21 +160,22 @@ class Aternode {
                     "Cookie": `${aternosSessionCookie};${aternosServerCookie};${tempCookie}`
                 }
             };
+            let data1= '';
             const req = https.request(options, (res) => {
                 console.log(`StatusCode: ${res.statusCode}`);
                 res.on('data', (chunk) => {
-                    data += chunk;
+                    data1 += chunk;
                 });
                 res.on('end', () => {
-                    data = JSON.parse(data);
-                    data.status = res.statusCode;
+                    data1 = JSON.parse(data1);
+                    data1.status = res.statusCode;
                 });
 
             });
             req.end();
             return new Promise((resolve, reject) => {
                 req.on('close', () => {
-                    resolve(data);
+                    resolve(data1);
                 });
                 req.on('error', (err) => {
                     reject(err);
@@ -205,9 +208,14 @@ class Aternode {
                     const queing = domWindow.getElementsByClassName('queue-position').item(0).innerHTML.trim();
                     const serverStatus = domWindow.getElementsByClassName('statuslabel-label').item(0).innerHTML.trim();
                     const queueTime = domWindow.getElementsByClassName('queue-time').item(0).innerHTML.trim();
+                    const {dynip, ip, name} = JSON.parse(domWindow.scripts.item(8).text.split('=')[1].replace(';', ''))
+                    status.dynip = dynip;
+                    status.ip = ip;
+                    status.name = name;
                     status.serverStatus = serverStatus.split(' ')[0];
                     status.hasQueue = queing ? queing : false;
                     status.queueTime = queueTime;
+                    console.log(status)
 
                 });
 
@@ -217,6 +225,7 @@ class Aternode {
             req.end();
             return new Promise((resolve, reject) => {
                 req.on('close', () => {
+                    this.emit('queue', status)
                     resolve(status);
                 });
             });
@@ -227,7 +236,6 @@ class Aternode {
 
         this.autoConfirm = async function (callback) {
             const status = await this.getStatus();
-            console.log(status);
             if (status.hasQueue) {
                 const queueTime = parseInt(status.queueTime.split(' ')[1]);
                 if (queueTime > 10) {
@@ -271,7 +279,7 @@ class Aternode {
             }
             else {
                 if (status.serverStatus === 'Online' && callback)
-                    return callback();
+                    return callback(status);
                 else if (status.serverStatus === 'Offline')
                     return console.error('Algo deu errado enquanto o servidor era iniciado, verifique os logs no site do aternos!');
             }
