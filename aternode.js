@@ -48,9 +48,6 @@ class Aternode extends EventEmitter{
                     }
                     aternosServerCookie = 'ATERNOS_SERVER=' + servers[serverIndex - 1];
                     resolve(servers);
-                    console.log(aternosServerCookie);
-
-
                 });
                 req.on('error', (err) => {
                     reject(err);
@@ -136,13 +133,8 @@ class Aternode extends EventEmitter{
             aternosSessionCookie = 'ATERNOS_SESSION=' + ATERNOS_SESSION;
         };
 
-        this.getSessionCookie = function () {
-            console.log(aternosSessionCookie);
-        };
-
         this.setServerCookie = function (ATERNOS_SERVER) {
             aternosServerCookie = 'ATERNOS_SERVER=' + ATERNOS_SERVER;
-            console.log(aternosServerCookie);
         };
 
         this.setAjaxToken = function (ajaxToken) {
@@ -161,7 +153,6 @@ class Aternode extends EventEmitter{
             };
             let data1= '';
             const req = https.request(options, (res) => {
-                console.log(`StatusCode: ${res.statusCode}`);
                 res.on('data', (chunk) => {
                     data1 += chunk;
                 });
@@ -214,7 +205,7 @@ class Aternode extends EventEmitter{
                     status.serverStatus = serverStatus.split(' ')[0];
                     status.hasQueue = queing ? queing : false;
                     status.queueTime = queueTime;
-                    console.log(status)
+                    
 
                 });
 
