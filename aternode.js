@@ -157,8 +157,13 @@ class Aternode extends EventEmitter{
                     data1 += chunk;
                 });
                 res.on('end', () => {
+                    try {
                     data1 = JSON.parse(data1);
                     data1.status = res.statusCode;
+                    }
+                    catch {
+                        req.emit('error', 'login or session token expired')
+                    }
                 });
 
             });
