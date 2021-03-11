@@ -199,6 +199,7 @@ class Aternode extends EventEmitter{
                 });
 
                 res.on('end', () => {
+                    try {
                     const domWindow = new JSDOM(htmlData).window.document;
                     const queing = domWindow.getElementsByClassName('queue-position').item(0).innerHTML.trim();
                     const serverStatus = domWindow.getElementsByClassName('statuslabel-label').item(0).innerHTML.trim();
@@ -210,19 +211,24 @@ class Aternode extends EventEmitter{
                     status.serverStatus = serverStatus.split(' ')[0];
                     status.hasQueue = queing ? queing : false;
                     status.queueTime = queueTime;
-                    
+                    }
+                    catch {
+                        req.emit('error', 'login failed or session token invalid');
+                    }
 
                 });
 
 
             });
-            req.on('error', (error) => console.log(error));
             req.end();
             return new Promise((resolve, reject) => {
                 req.on('close', () => {
                     this.emit('queue', status)
                     resolve(status);
                 });
+                req.on('error', (err) => {
+                    reject(err);
+                })
             });
 
 
