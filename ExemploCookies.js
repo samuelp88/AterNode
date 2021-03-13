@@ -1,10 +1,10 @@
-const Aternode = require('./aternode');
+const Aternode = require('aternode');
 const aternos = new Aternode();
 
-const aternosSessionCookie = 'nfpATubfeu0W7wMAc4E7731rqQfhGcUisNXNDCadwrXIHWag4APXCyNU4f2wx7ZqWnkIO5ITyfEhA67rdw33SJqmqChTwChlUA9J';
+const aternosSessionCookie = 'Cookie ATERNOS_SESSION aqui';
 
 (async () =>{
-    await aternos.getAjaxToken();
+    await aternos.getAjaxToken()
 
     // Equivalente ao metodo .login(), porém é mais rapido e não precisa fazer requisições.
     // Usa o cookie ATERNOS_SESSION para autenticar no aternos, pode ser usado caso não queira usar login e senha.
