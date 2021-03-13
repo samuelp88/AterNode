@@ -141,7 +141,8 @@ class Aternode extends EventEmitter{
             AJAX_TOKEN = ajaxToken;
         };
 
-        this.start = function () {
+        this.start = async function () {
+            await this.getAjaxToken();
             const options = {
                 hostname: 'aternos.org',
                 port: 443,
