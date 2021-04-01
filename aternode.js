@@ -205,7 +205,7 @@ class Aternode extends EventEmitter{
                     const queing = domWindow.getElementsByClassName('queue-position').item(0).innerHTML.trim();
                     const serverStatus = domWindow.getElementsByClassName('statuslabel-label').item(0).innerHTML.trim();
                     const queueTime = domWindow.getElementsByClassName('queue-time').item(0).innerHTML.trim();
-                    const {dynip, ip, name} = JSON.parse(domWindow.scripts.item(8).text.split('=')[1].replace(';', ''))
+                    const {dynip, ip, name} = JSON.parse(domWindow.scripts.item(6).text.split('=')[1].replace(';', ''))
                     status.dynip = dynip;
                     status.ip = ip;
                     status.name = name;
