@@ -182,7 +182,7 @@ class Aternode extends EventEmitter{
         };
 
         this.getStatus = function (callback) {
-            const status = {};
+            let status = {};
             const options = {
                 hostname: 'aternos.org',
                 port: 443,
@@ -202,16 +202,15 @@ class Aternode extends EventEmitter{
                 res.on('end', () => {
                     try {
                     const domWindow = new JSDOM(htmlData).window.document;
-                    const queing = domWindow.getElementsByClassName('queue-position').item(0).innerHTML.trim();
-                    const serverStatus = domWindow.getElementsByClassName('statuslabel-label').item(0).innerHTML.trim();
-                    const queueTime = domWindow.getElementsByClassName('queue-time').item(0).innerHTML.trim();
-                    const {dynip, ip, name} = JSON.parse(domWindow.scripts.item(6).text.split('=')[1].replace(';', ''))
-                    status.dynip = dynip;
-                    status.ip = ip;
-                    status.name = name;
-                    status.serverStatus = serverStatus.split(' ')[0];
-                    status.hasQueue = queing ? queing : false;
-                    status.queueTime = queueTime;
+                    const lastStatusIndex = htmlData.search('var lastStatus');
+                    const lastStatus = htmlData.slice(lastStatusIndex, lastStatusIndex + 800)
+                    .split(';')[0]
+                    .split('=')
+                    .slice(1)
+                    .join('');
+                    
+                    status = JSON.parse(lastStatus);
+
                     }
                     catch {
                         req.emit('error', 'login failed or session token invalid');
@@ -238,8 +237,8 @@ class Aternode extends EventEmitter{
 
         this.autoConfirm = async function (callback) {
             const status = await this.getStatus();
-            if (status.hasQueue) {
-                const queueTime = parseInt(status.queueTime.split(' ')[1]);
+            if (status.queue) {
+                const queueTime = status.queue.minutes
                 if (queueTime > 10) {
                     setTimeout(() => {
                         this.autoConfirm(callback);
@@ -274,7 +273,7 @@ class Aternode extends EventEmitter{
                     req.end();
                 }
             }
-            else if (status.serverStatus !== 'Offline' && status.serverStatus !== 'Online') {
+            else if (status.label !== 'Offline' && status.label !== 'Online') {
                 setTimeout(() => {
                     this.autoConfirm(callback);
                 }, 30000);

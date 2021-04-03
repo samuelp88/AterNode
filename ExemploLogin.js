@@ -13,7 +13,7 @@ const aternos = new Aternode();
     await aternos.start();
 
     // O evento queue é ativado toda vez que o metodo .autoConfirm() ou o metodo .getStatus() verificam o status atual da fila.
-    // O callback retorna a posição do servidor na fila e o tempo estimado para o servidor ser iniciado.
+    // O callback retorna todas informações sobre o servidor sendo iniciado, incluindo tempo estimado e posição na fila.
     aternos.on('queue', (status) => {
         console.log(status);
     })
