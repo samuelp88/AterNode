@@ -212,8 +212,9 @@ class Aternode extends EventEmitter{
                     status = JSON.parse(lastStatus);
 
                     }
-                    catch {
+                    catch(err) {
                         req.emit('error', 'login failed or session token invalid');
+                        
                     }
 
                 });
@@ -279,9 +280,9 @@ class Aternode extends EventEmitter{
                 }, 30000);
             }
             else {
-                if (status.serverStatus === 'Online' && callback)
+                if (status.label === 'Online' && callback)
                     return callback(status);
-                else if (status.serverStatus === 'Offline')
+                else if (status.label === 'Offline')
                     return console.error('Algo deu errado enquanto o servidor era iniciado, verifique os logs no site do aternos!');
             }
 
