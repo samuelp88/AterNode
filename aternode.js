@@ -203,7 +203,7 @@ class Aternode extends EventEmitter{
                     try {
                     const domWindow = new JSDOM(htmlData).window.document;
                     const lastStatusIndex = htmlData.search('var lastStatus');
-                    const lastStatus = htmlData.slice(lastStatusIndex, lastStatusIndex + 800)
+                    const lastStatus = htmlData.slice(lastStatusIndex, lastStatusIndex + 1000)
                     .split(';')[0]
                     .split('=')
                     .slice(1)
@@ -213,8 +213,12 @@ class Aternode extends EventEmitter{
 
                     }
                     catch(err) {
-                        req.emit('error', 'login failed or session token invalid');
-                        
+                        if(typeof status === 'object') {
+                            req.emit('error', 'login failed or session token invalid');
+                        }
+                        else {
+                            console.log(err)
+                        }
                     }
 
                 });
