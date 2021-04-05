@@ -2,6 +2,8 @@
 # AterNode
 Uma biblioteca simples para iniciar um servidor no Aternos, confirmar automaticamente e acompanhar a posição do servidor na fila usando apenas algumas linhas.
 
+Nota: Devido a mudanças recentes no site do aternos o modulo não funciona mais, pois as requisições estão sendo bloqueadas pelo cloudflare.
+
 ## Começando
 ### Instalação
 ```
